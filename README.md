@@ -23,17 +23,18 @@ use \Rezzza\Workflow\Exception;
 $graph = new Graph();
 $graph
     ->add('empty', new State\NextOne())                                     // can go to filled
-    ->add('filled', new State\StateCollection(array('empty', 'validated'))) // can go to empty or confirmed
+    ->add('filled', new State\StateCollection(array('empty', 'confirmed'))) // can go to empty or confirmed
     ->add('confirmed', new State\NextOne())                                 // can go to pending transaction
     ->add('pending_transaction', new State\NextAll())                       // can go to failing_transaction or success_transaction
     ->add('failing_transaction', new State\End())
     ->add('success_transaction', new State\End())
 
+$cart     = new Acme\ECommerce\Path\To\Cart();
 $workflow = new Workflow($graph, $cart, 'status');
 $states   = $workflow->getAuthorizedStates();
 
 try {
-    $workflow->updateState('xxx');
+    $workflow->updateState('filled');
 } catch (Exception\ConflictException e) {
     // it seems you want to add a state already setted.
 } catch (Exception\WorkflowException $e) {
@@ -47,7 +48,7 @@ Specifications
 
 You can add a specification to each states
 
-```
+```php
 use Rezzza\Workflow\Specification\SpecificationInterface;
 
 class ConfirmableSpecification implements SpecificationInterface
