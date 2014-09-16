@@ -1,0 +1,31 @@
+{
+    "name": "rezzza/workflow",
+    "type": "library",
+    "description": "Rezzza workflow",
+    "keywords": ["workflow", "state"],
+    "license": "MIT",
+    "homepage": "https://github.com/rezzza/workflow",
+    "authors": [{
+        "name": "Community contributors",
+        "homepage": "https://github.com/rezzza/workflow"
+    }],
+
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/property-access": "~2.2"
+    },
+    "require-dev": {
+        "atoum/atoum": "dev-master"
+    },
+    "autoload": {
+        "psr-4": { "Rezzza\\Workflow\\": "src/" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    },
+    "config": {
+        "bin-dir": "bin"
+    }
+}
