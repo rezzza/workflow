@@ -15,9 +15,9 @@ class Graph
     private $states = array();
 
     /**
-     * @var float
+     * @var integer
      */
-    private $maskIterator = 0;
+    private $maskIterator;
 
     /**
      * @param string               $key   key
@@ -33,7 +33,11 @@ class Graph
 
         $this->states[$key] = $state;
 
-        $this->maskIterator = ($this->maskIterator === 0) ? 1 : $this->maskIterator << 1;
+        $this->maskIterator = ($this->maskIterator === null) ? 1 : $this->maskIterator << 1;
+
+        if ($this->maskIterator === 0) {
+            throw new \OutOfBoundsException(sprintf('You added too many states, Rezzza\Workflow uses bits and assign them to states.'));
+        }
 
         $state->setMask($this->maskIterator);
 

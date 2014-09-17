@@ -68,7 +68,7 @@ class Workflow
      *
      * @return object
      */
-    public function updateState($state)
+    public function moveToState($state)
     {
         $actualState = $this->readProperty();
 

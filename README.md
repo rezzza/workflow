@@ -3,12 +3,20 @@ Rezzza\Workflow
 
 Define workflow of an object easily.
 
+
 Installation
 ------------
 
 Through Composer :
 
-        $ composer require --dev "rezzza/workflow:1.0.*@dev"
+```
+$ composer require --dev "rezzza/workflow:1.0.*@dev"
+```
+
+
+Warning, this library uses binary system, it assigns a binary mask to each state. 
+By this way, you'll be limited in number of states.
+
 
 Usage
 -----
@@ -22,19 +30,19 @@ use \Rezzza\Workflow\Exception;
 
 $graph = new Graph();
 $graph
-    ->add('empty', new State\NextOne())                                     // can go to filled
-    ->add('filled', new State\StateCollection(array('empty', 'confirmed'))) // can go to empty or confirmed
-    ->add('confirmed', new State\NextOne())                                 // can go to pending transaction
-    ->add('pending_transaction', new State\NextAll())                       // can go to failing_transaction or success_transaction
-    ->add('failing_transaction', new State\End())
-    ->add('success_transaction', new State\End())
+    ->addState('empty', new State\NextOne())                                     // can go to filled
+    ->addState('filled', new State\StateCollection(array('empty', 'confirmed'))) // can go to empty or confirmed
+    ->addState('confirmed', new State\NextOne())                                 // can go to pending transaction
+    ->addState('pending_transaction', new State\NextAll())                       // can go to failing_transaction or success_transaction
+    ->addState('failing_transaction', new State\End())
+    ->addState('success_transaction', new State\End())
 
 $cart     = new Acme\ECommerce\Path\To\Cart();
 $workflow = new Workflow($graph, $cart, 'status');
 $states   = $workflow->getAuthorizedStates();
 
 try {
-    $workflow->updateState('filled');
+    $workflow->moveToState('filled');
 } catch (Exception\ConflictException e) {
     // it seems you want to add a state already setted.
 } catch (Exception\WorkflowException $e) {
@@ -62,7 +70,7 @@ class ConfirmableSpecification implements SpecificationInterface
 $graph = new Graph();
 $graph
     //........
-    ->add('confirmed', new State\NextOne(new ConfirmableSpecification()))
+    ->addState('confirmed', new State\NextOne(new ConfirmableSpecification()))
     //.........
 
 ```
