@@ -1,6 +1,8 @@
 Rezzza\Workflow
 ===============
 
+[![Build Status](https://travis-ci.org/rezzza/workflow.svg?branch=master)](https://travis-ci.org/rezzza/workflow)
+
 Define workflow of an object easily.
 
 
